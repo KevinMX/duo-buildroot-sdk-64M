@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - 64M
 
 env:
   TZ: Asia/Shanghai
