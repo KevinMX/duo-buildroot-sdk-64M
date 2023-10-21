@@ -59,3 +59,23 @@ jobs:
           ${{ steps.imgpath.outputs.path }}
           ${{ github.workspace }}/out/milk-v.hash
         if-no-files-found: error
+
+    - name: Generate release tag
+      id: tag
+      if: !cancelled()
+      run: |
+        echo "release_tag=$(date +"%Y.%m.%d-%H%M")-64M" >> $GITHUB_OUTPUT
+        touch release.txt
+        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Publish release
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: |
+          ${{ steps.imgpath.outputs.path }}
+          ${{ github.workspace }}/out/milk-v.hash
