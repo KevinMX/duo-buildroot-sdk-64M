@@ -1,4 +1,4 @@
-English | [简体中文](./README-zh.md)
+English | [简体中文](./README-zh.md) | [日本語](./README-ja.md)
 
 # Project Introduction
 
@@ -97,9 +97,23 @@ If not, the following two methods are both applicable:
 2. Manual download and installation of the deb package
 
    ```bash
-   wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb
-   sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb
+   wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+   sudo dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
    ```
+### Compiling with Windows Linux Subsystem (WSL)
+
+If you wish to perform the compilation with WSL, there's an small issue building the image.
+The $PATH, due Windows interoperability, has Windows environment variables which include some spaces between the paths.
+
+To solve this problem you need to change the `/etc/wsl.conf` file and add the following lines:
+
+```bash
+[interop]
+appendWindowsPath = false
+```
+
+After that, you need to reboot the WSL with `wsl.exe --reboot`. Then you able to run the `./build_milkv.sh` script or the `build_all` line in the step-by-step compilation method.
+To rollback this change in `/etc/wsl.conf` file set `appendWindowsPath` as true.  To reboot the WSL, can you use the Windows PowerShell command `wsl.exe --shutdown` then `wsl.exe`, after that the Windows environment variables become avaliable again in $PATH.
 
 ## Compile the Image
 
